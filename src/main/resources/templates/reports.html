@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th:="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Laundromat®</title>
+</head>
+<body>
+    <h1>Отчет пользования услугами прачечной</h1>
+
+    <form action="/getReport" th:object="${bean}" method="GET">
+        <p>
+        <select name="report" id="report">
+            <option th:each="report : ${reports}" th:value="${report}" th:text="${report}"></option>
+        </select>
+
+        Выберите номер прачечной
+        <select th:field="*{selectedLaundromatNum}">
+            <option th:each="n : ${laundromatNums}" th:value="${n}" th:text="${n}" />
+        </select>
+        и машинки
+        <select th:field="*{selectedWasherNum}">
+            <option th:each="r : ${washerNums}" th:value="${r}" th:text="${r}" />
+        </select>
+            <input type="submit" value="OK"/></p>
+    </form>
+
+    <div th:if="${result}">
+        <div th:utext="${result}"></div>
+    </div>
+</body>
+</html>
