@@ -8,8 +8,6 @@ import ru.laundromat.laundromatdataservice.services.ReportingService
 import kotlin.reflect.full.declaredMemberFunctions
 import org.springframework.web.bind.annotation.GetMapping
 
-
-
 @Controller
 class ReportsController {
     @Autowired

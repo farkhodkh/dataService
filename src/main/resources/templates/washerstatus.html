@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Laundromat®</title>
+</head>
+
+<body>
+
+
+<form action="/washerstatus" th:object="${bean}" method="GET">
+<h1>Состояние работы стиральных машинок в прачичной № ${laundromatNumber}</h1>
+    <!--<p>-->
+        <!--Выберите номер прачечной-->
+        <!--<select th:field="*{selectedLaundromatNum}">-->
+            <!--<option th:each="n : ${laundromatNums}" th:value="${n}" th:text="${n}" />-->
+        <!--</select>-->
+        <!--<input type="submit" value="OK"/>-->
+    <!--</p>-->
+</form>
+
+
+<table style="align: center">
+    <tbody>
+    <tr>
+        <td style="text-align: center;">1</td>
+        <td style="text-align: center;">2</td>
+    </tr>
+
+    <tr>
+        <td style="text-align: center;">
+            <div style="background-image: url(../images/washer.jpg);
+            background-repeat: no-repeat;
+            position: relative;
+            center center;
+            height: 250px;
+            width: 175px;
+            border: 1px solid black;
+             -moz-background-size: 100%;
+             -webkit-background-size: 100%;
+             -o-background-size: 100%;
+            background-size: 100%;" );>
+                <img style="width: 90px; height: 90px; overflow: hidden;  margin-left: 0px; margin-top: 65px; center center;"
+                     alt="Вращение"
+                     id="rotation1" src="/images/rotation.png">
+            </div>
+        </td>
+        <td style="text-align: center;">
+            <div style="background-image: url(../images/washer.jpg);
+            background-repeat: no-repeat;
+            position: relative;
+            center center;
+            height: 250px;
+            width: 175px;
+            border: 1px solid black;
+             -moz-background-size: 100%;
+             -webkit-background-size: 100%;
+             -o-background-size: 100%;
+            background-size: 100%;" );>
+                <img style="width: 90px; height: 90px; overflow: hidden;  margin-left: 0px; margin-top: 65px; center center;"
+                     alt="Вращение"
+                     id="rotation2" src="/images/rotation.png">
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<script>
+    rotation1.onclick = function() {
+      animate(function(timePassed) {
+        <!--train.style.left = timePassed / 5 + 'px';-->
+        rotation1.style.transform = "rotate(" + timePassed + "deg)";
+      }, 100000);
+    };
+
+    rotation2.onclick = function() {
+      animate(function(timePassed) {
+        <!--train.style.left = timePassed / 5 + 'px';-->
+        rotation2.style.transform = "rotate(" + timePassed + "deg)";
+      }, 100000);
+    };
+
+    function animate(draw, duration) {
+      var start = performance.now();
+
+      requestAnimationFrame(function animate(time) {
+        var timePassed = time - start;
+
+        if (timePassed > duration) timePassed = duration;
+
+        draw(timePassed);
+
+        if (timePassed < duration) {
+          requestAnimationFrame(animate);
+        }
+
+      });
+    }
+
+</script>
+</body>
+</html>

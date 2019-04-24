@@ -16,6 +16,7 @@ import java.io.IOException
 @ComponentScan("LaundromatdataserviceApplication")
 class WebSecurityConfig(): WebSecurityConfigurerAdapter() {
 
+
     @Autowired
     lateinit var accessDeniedHandler: ReportAccessDeniedHandler
 
