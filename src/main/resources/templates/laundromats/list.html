@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head"></head>
+
+<div th:fragment="laundromatslist">
+
+    <div th:replace="fragments/laundromatsHeader :: laundromatsheader"></div>
+
+    <table class="table table-bordered table-hover horizontal-align">
+        <thead>
+        <tr>
+            <!--<th type="hidden" style="width: 5%">#</th>-->
+            <th style="width: 30%">Customer</th>
+            <th style="width: 30%">Number</th>
+            <th style="width: 25%">Date created</th>
+            <th style="width: 25%">Address</th>
+            <th style="width: 5%">Phone</th>
+            <th style="width: 5%">Edit</th>
+            <th style="width: 5%">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="laundromat : ${laundromats}">
+            <!--<td type="hidden" th:text="${laundromat.id}" style="text-align: center">#</td>-->
+            <td th:text="${laundromat.customerName}">Customer</td>
+            <td th:text="${laundromat.number}">Number</td>
+            <td th:text="${#dates.format(laundromat.datacreated, 'EEE, d MMM yyyy HH:mm')}" style="text-align: center">Date created</td>
+            <td th:text="${laundromat.address}" style="text-align: center">Address</td>
+            <td th:text="${laundromat.phone}" style="text-align: center">Phone</td>
+            <td style="text-align: center"><a th:href="@{'/editLaundromat/{id}'(id=${laundromat.id})}"><i class="fa fa-edit" style="font-size:20px"></i></a></td>
+            <td style="text-align: center"><a th:href="@{'/deleteLaundromat/{id}'(id=${laundromat.id})}"><i class="fa fa-trash" style="font-size:20px"></i></a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="eng"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="usersheader">
+    <nav class="navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" th:href="@{/}">Laundromat</a>
+                <ul class="nav navbar-nav">
+                    <li><a href="#" th:href="@{/newUser}">Add new</a></li>
+                </ul>
+            </div>
+            <h3 align="center">Список пользователей</h3>
+        </div>
+    </nav>
+</div>
+</html>

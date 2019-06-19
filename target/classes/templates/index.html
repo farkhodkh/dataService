@@ -1,10 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Добро пожаловать</title>
-</head>
-<body>
-    Статистика пользования услугами Laundromat!
-</body>
+<html lang="ru">
+    <head th:replace="fragments/head :: head"></head>
+
+    <body>
+    <div th:replace="fragments/header :: header"></div>
+
+    <h2 style="text-align: center;">Личный кабинет пользователя сети прачечных Laundromat</h2>
+
+        <form id="main_menu">
+            <p><a title="Отчеты (Статистика)" href="reports">Отчеты</a></p>
+            <p><a title="Статус машинок" href="washerstatus">Статус машинок</a></p>
+            <p><a title="Клиенты" href="customers">Клиенты</a></p>
+            <p><a title="Пользователи" href="users">Пользователи</a></p>
+            <p><a title="Прачечные" href="laundromats">Прачечные</a></p>
+        </form>
+    </body>
 </html>

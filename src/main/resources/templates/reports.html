@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th:="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Laundromat®</title>
-</head>
-<body>
-    <h1>Отчет пользования услугами прачечной</h1>
+<!--<head>-->
+    <!--<meta charset="UTF-8">-->
+    <!--<title>Laundromat®</title>-->
+<!--</head>-->
+<head th:replace="fragments/head :: head"></head>
 
+<body>
+    <div th:replace="fragments/header :: header"></div>
+
+    <h1>Отчет пользования услугами прачечной</h1>
     <form action="/getReport" th:object="${bean}" method="GET">
         <p>
         <select name="report" id="report">

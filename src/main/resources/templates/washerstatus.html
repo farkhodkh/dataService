@@ -1,23 +1,15 @@
 <!DOCTYPE HTML>
 <html>
 
-<head>
-    <meta charset="UTF-8">
-    <title>Laundromat®</title>
-</head>
+<head th:replace="fragments/head :: head"></head>
 
 <body>
 
+<div th:replace="fragments/header :: header"></div>
 
 <form action="/washerstatus" th:object="${bean}" method="GET">
-<h1>Состояние работы стиральных машинок в прачичной № ${laundromatNumber}</h1>
-    <!--<p>-->
-        <!--Выберите номер прачечной-->
-        <!--<select th:field="*{selectedLaundromatNum}">-->
-            <!--<option th:each="n : ${laundromatNums}" th:value="${n}" th:text="${n}" />-->
-        <!--</select>-->
-        <!--<input type="submit" value="OK"/>-->
-    <!--</p>-->
+
+    <h1>Состояние работы стиральных машинок в прачичной № ${laundromatNumber}</h1>
 </form>
 
 

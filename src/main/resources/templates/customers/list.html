@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head"></head>
+
+<div th:fragment="userslist">
+
+    <div th:replace="fragments/customersHeader :: customersheader"></div>
+
+    <table class="table table-bordered table-hover horizontal-align">
+        <thead>
+        <tr>
+            <th style="width: 5%">#</th>
+            <th style="width: 30%">Name</th>
+            <th style="width: 25%">Date created</th>
+            <th style="width: 25%">E-Mail</th>
+            <th style="width: 5%">Phone</th>
+            <th style="width: 5%">Address</th>
+            <th style="width: 5%">Edit</th>
+            <th style="width: 5%">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="customer : ${customers}">
+            <td th:text="${customer.id}" style="text-align: center">#</td>
+            <td th:text="${customer.name}">Name</td>
+            <td th:text="${#dates.format(customer.datacreated, 'EEE, d MMM yyyy HH:mm')}" style="text-align: center">Date created</td>
+            <td th:text="${customer.email}" style="text-align: center">E-Mail</td>
+            <td th:text="${customer.phone}" style="text-align: center">Phone</td>
+            <td th:text="${customer.address}" style="text-align: center">Address</td>
+            <td style="text-align: center"><a th:href="@{'/editCustomer/{id}'(id=${customer.id})}"><i class="fa fa-edit" style="font-size:20px"></i></a></td>
+            <td style="text-align: center"><a th:href="@{'/deleteCustomer/{id}'(id=${customer.id})}"><i class="fa fa-trash" style="font-size:20px"></i></a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</html>

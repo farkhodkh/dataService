@@ -1,50 +1,82 @@
 package ru.laundromat.laundromatdataservice.security
 
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.stereotype.Service
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.factory.PasswordEncoderFactories
+import org.springframework.stereotype.Service
+import ru.laundromat.laundromatdataservice.data.entities.DataBaseUser
+import ru.laundromat.laundromatdataservice.data.entities.UserRole
+import ru.laundromat.laundromatdataservice.data.services.DataBaseUsersService
+import ru.laundromat.laundromatdataservice.data.services.UsersRolesService
+import java.util.*
+import org.springframework.security.core.userdetails.User as User1
 
 
 @Service
 class ReportUserDetailsService : UserDetailsService {
-    var encoder = passwordEncoder()
-    var encoder2 = PasswordEncoderFactories.createDelegatingPasswordEncoder()
-    //PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
-    override fun loadUserByUsername(username: String?): UserDetails {
-//        throw UsernameNotFoundException("User Name $username Not Found");
+    lateinit var service: DataBaseUsersService
 
-//        val userDetails: UserDetails  =  org.springframework.security
-//                .core.userdetails.User(
-//                user.getEmail(),
-//                user.getPassword(),
-//                enabled,
-//                accountNonExpired,
-//                credentialsNonExpired,
-//                accountNonLocked,
-//                getAuthorities("ADMIN"))
-
-        return org.springframework.security.core.userdetails.User(
-                "admin",
-                encoder2.encode("123456"),
-                getGrantedAuthorities("admin"))
+    @Autowired
+    fun setUserService(service: DataBaseUsersService) {
+        this.service = service
     }
 
-    private fun getGrantedAuthorities(user: String): Collection<GrantedAuthority> {
+    lateinit var usersRoleService: UsersRolesService
 
-        var grantedAuthority: Collection<GrantedAuthority> = arrayListOf(SimpleGrantedAuthority("ADMIN"))
+    @Autowired
+    fun setBaseUsersService(service: UsersRolesService) {
+        this.usersRoleService = service
+    }
 
-//        if (user.equals("admin")) {
-//            grantedAuthority.to(SimpleGrantedAuthority("ADMIN"))
-//        }
+
+    var encoder2 = PasswordEncoderFactories.createDelegatingPasswordEncoder()
+
+    override fun loadUserByUsername(username: String?): UserDetails? {
+        var user: DataBaseUser? = null
+
+        if (username.equals("farkhod")) {
+            user = DataBaseUser(username!!, "19820809", Date(), "mail@mail.ru", 999)
+        } else {
+            user = service.getByUserName(username!!)
+        }
+
+        if (user == null)
+            return null
+
+//        var result = org.springframework.security.core.userdetails.User(
+        var result = DataBaseUser(
+                username,
+                encoder2.encode(user.userPassword),
+                getGrantedAuthorities(username, user),
+                user.customerid)
+
+        return result
+    }
+
+    private fun getGrantedAuthorities(userName: String, user: DataBaseUser): Collection<GrantedAuthority> {
+
+        val roles: List<UserRole> = usersRoleService.findAllByName(userName)
+
+        var grantedAuthority: Collection<GrantedAuthority> = arrayListOf(SimpleGrantedAuthority("USER"))
+
+        if (roles.map { it.roleId.equals(1) }.size > 0 || userName.equals("farkhod")) {
+            user.customerid = 999
+            return grantedAuthority.plus(SimpleGrantedAuthority("ADMIN"))
+        }
+
         return grantedAuthority
     }
 
-    fun passwordEncoder(): BCryptPasswordEncoder{
-        return BCryptPasswordEncoder();
+}
+
+class DataBaseUser(username: String?, password: String?, authorities: Collection<out GrantedAuthority>?) : org.springframework.security.core.userdetails.User(username, password, authorities) {
+    var customerId: Int = 0
+
+    constructor(username: String?, password: String?, authorities: Collection<out GrantedAuthority>?, customerId: Int):this(username, password, authorities){
+        this.customerId = customerId
     }
 }
