@@ -1,14 +1,18 @@
 <!DOCTYPE HTML>
 <html>
 
-<head th:replace="fragments/head :: head"></head>
+<head th:replace="fragments/head :: head">
+    <!--<script type="text/javascript" src="js/jquery-3.4.1.js"></script>-->
+    <!--<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>-->
+    <!--<script type="text/javascript" src="webjars/jquery/3.2.0/jquery.min.js"></script>-->
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
 
 <body>
 
 <div th:replace="fragments/header :: header"></div>
 
 <form action="/washerstatus" th:object="${bean}" method="GET">
-
     <h1>Состояние работы стиральных машинок в прачичной № ${laundromatNumber}</h1>
 </form>
 
@@ -19,7 +23,6 @@
         <td style="text-align: center;">1</td>
         <td style="text-align: center;">2</td>
     </tr>
-
     <tr>
         <td style="text-align: center;">
             <div style="background-image: url(../images/washer.jpg);
@@ -60,6 +63,29 @@
 </table>
 
 <script>
+    var rotate1 = function(){
+        animate(function(timePassed) {
+            rotation1.style.transform = "rotate(" + timePassed + "deg)";
+        }, 100000);
+
+        alert('Добрый день');
+
+        $.getJSON("getWasherStatus",
+            {laundromatId: 1, washerId: 1},
+            function(data) {
+                alert('Boom!');
+                if (data != null) {
+                    alert('Boom 2!');
+                }
+            }
+        );
+        $.getJSON("/getWasherStatus", function(result){
+            alert('Boom!');
+        });
+    };
+
+    setTimeout(rotate1, 3000);
+
     rotation1.onclick = function() {
       animate(function(timePassed) {
         <!--train.style.left = timePassed / 5 + 'px';-->
@@ -90,7 +116,6 @@
 
       });
     }
-
 </script>
 </body>
 </html>
