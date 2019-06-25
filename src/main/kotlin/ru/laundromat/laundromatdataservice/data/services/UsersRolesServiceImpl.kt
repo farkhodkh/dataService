@@ -8,18 +8,14 @@ import ru.laundromat.laundromatdataservice.data.repository.UsersRolesRepository
 @Service
 class UsersRolesServiceImpl : UsersRolesService {
 
-    private var repository: UsersRolesRepository? = null
+    lateinit var repository: UsersRolesRepository
 
     @Autowired
     fun setProductRepository(repository: UsersRolesRepository) {
         this.repository = repository
     }
 
-    override fun getAll(): List<UserRole> {
-        return repository?.findAll()!!
-    }
+    override fun getAll(): List<UserRole> = repository?.findAll()!!
 
-    override fun findAllByName(name: String): List<UserRole> {
-        return repository?.findAllByName(name)!!
-    }
+    override fun findAllByName(name: String): List<UserRole> = repository?.findAllByName(name)!!
 }

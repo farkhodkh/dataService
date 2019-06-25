@@ -2,10 +2,7 @@
 <html>
 
 <head th:replace="fragments/head :: head">
-    <!--<script type="text/javascript" src="js/jquery-3.4.1.js"></script>-->
-    <!--<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>-->
-    <!--<script type="text/javascript" src="webjars/jquery/3.2.0/jquery.min.js"></script>-->
-    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 </head>
 
 <body>
@@ -13,15 +10,261 @@
 <div th:replace="fragments/header :: header"></div>
 
 <form action="/washerstatus" th:object="${bean}" method="GET">
-    <h1>Состояние работы стиральных машинок в прачичной № ${laundromatNumber}</h1>
+    <h1>Состояние работы стиральных машинок в прачичной №
+
+        <select th:field="*{selectedLaundromatNum}" onchange="changeWashersStatus(this)" id="laundromatSelector">
+            <option th:each="n : ${laundromatNums}" th:value="${n}" th:text="${n}" />
+        </select>
+
+    </h1>
 </form>
 
+<form action="/getReport" th:object="${bean}" method="GET">
+    <script>
+        function changeWashersStatus(obj){
+            var selectorOption = document.getElementById("laundromatSelector").options;
+            var n = selectorOption.selectedIndex;
+            var selectedLaundromatNum = selectorOption[n].value
+            $.getJSON("/getWasherStatus",  {laundromatId: selectedLaundromatNum})
+                .done(function(data) {
+                    changeStatus(data);
+                })
+                .fail(function(jqxhr, textStatus, error ) {
+                    var err = textStatus + ", " + error;
+                    console.log( "Request Failed: " + err );
+                });
+        };
+    </script>
+    <script>
+        var animate1Interval, animate2Interval, animate3Interval, animate4Interval,
+            animate5Interval, animate6Interval, animate7Interval, animate8Interval, animate9Interval, animate10Interval;
+
+        function clearIntervalForAll(){
+            clearInterval(animate1Interval);
+            clearInterval(animate2Interval);
+            clearInterval(animate3Interval);
+            clearInterval(animate4Interval);
+            clearInterval(animate5Interval);
+            clearInterval(animate6Interval);
+            clearInterval(animate7Interval);
+            clearInterval(animate8Interval);
+            clearInterval(animate9Interval);
+            clearInterval(animate10Interval);
+            rotation1.style.transform = "rotate(0deg)";
+            rotation2.style.transform = "rotate(0deg)";
+            rotation3.style.transform = "rotate(0deg)";
+            rotation4.style.transform = "rotate(0deg)";
+            rotation5.style.transform = "rotate(0deg)";
+            rotation6.style.transform = "rotate(0deg)";
+            rotation7.style.transform = "rotate(0deg)";
+            rotation8.style.transform = "rotate(0deg)";
+            rotation9.style.transform = "rotate(0deg)";
+            rotation10.style.transform = "rotate(0deg)";
+        }
+
+        function changeStatus(data){
+            clearIntervalForAll();
+
+            for (index = 0; index < data.length; ++index) {
+                if (data[index].whasherNumber==1){
+                    if(data[index].whasherStatus==1){
+                        animate1Interval = setInterval(function(){
+                            var deg = 10;
+                            var strDeg = rotation1.style.transform.replace("rotate(", "");
+                            var strDeg = strDeg.replace(")", "");
+
+                            var currDeg = 0;
+
+                            if(strDeg == "")
+                            {
+                                currDeg = 1;
+                            }else {
+                                currDeg = parseInt(strDeg);
+                            }
+                            rotation1.style.transform = "rotate(" + (currDeg + deg) + "deg)";
+                        }, 10);
+                    }
+                } else if(data[index].whasherNumber==2){
+                    if(data[index].whasherStatus==1){
+                        animate2Interval = setInterval(function(){
+                            var deg = 10;
+                            var strDeg = rotation2.style.transform.replace("rotate(", "");
+                            var strDeg = strDeg.replace(")", "");
+
+                            var currDeg = 0;
+
+                            if(strDeg == "")
+                            {
+                                currDeg = 1;
+                            }else {
+                                currDeg = parseInt(strDeg);
+                            }
+                            rotation2.style.transform = "rotate(" + (currDeg + deg) + "deg)";
+                        }, 10);
+                    }
+                } else if(data[index].whasherNumber==3){
+                    if(data[index].whasherStatus==1){
+                        animate3Interval = setInterval(function(){
+                            var deg = 10;
+                            var strDeg = rotation3.style.transform.replace("rotate(", "");
+                            var strDeg = strDeg.replace(")", "");
+
+                            var currDeg = 0;
+
+                            if(strDeg == "")
+                            {
+                                currDeg = 1;
+                            }else {
+                                currDeg = parseInt(strDeg);
+                            }
+                            rotation3.style.transform = "rotate(" + (currDeg + deg) + "deg)";
+                        }, 10);
+                    }
+                } else if(data[index].whasherNumber==4){
+                    if(data[index].whasherStatus==1){
+                        animate4Interval = setInterval(function(){
+                            var deg = 10;
+                            var strDeg = rotation4.style.transform.replace("rotate(", "");
+                            var strDeg = strDeg.replace(")", "");
+
+                            var currDeg = 0;
+
+                            if(strDeg == "")
+                            {
+                                currDeg = 1;
+                            }else {
+                                currDeg = parseInt(strDeg);
+                            }
+                            rotation4.style.transform = "rotate(" + (currDeg + deg) + "deg)";
+                        }, 10);
+                    }
+                } else if(data[index].whasherNumber==5){
+                    if(data[index].whasherStatus==1){
+                        animate5Interval = setInterval(function(){
+                            var deg = 10;
+                            var strDeg = rotation5.style.transform.replace("rotate(", "");
+                            var strDeg = strDeg.replace(")", "");
+
+                            var currDeg = 0;
+
+                            if(strDeg == "")
+                            {
+                                currDeg = 1;
+                            }else {
+                                currDeg = parseInt(strDeg);
+                            }
+                            rotation5.style.transform = "rotate(" + (currDeg + deg) + "deg)";
+                        }, 10);
+                    }
+                } else if(data[index].whasherNumber==6){
+                    if(data[index].whasherStatus==1){
+                        animate6Interval = setInterval(function(){
+                            var deg = 10;
+                            var strDeg = rotation6.style.transform.replace("rotate(", "");
+                            var strDeg = strDeg.replace(")", "");
+
+                            var currDeg = 0;
+
+                            if(strDeg == "")
+                            {
+                                currDeg = 1;
+                            }else {
+                                currDeg = parseInt(strDeg);
+                            }
+                            rotation6.style.transform = "rotate(" + (currDeg + deg) + "deg)";
+                        }, 10);
+                    }
+                } else if(data[index].whasherNumber==7){
+                    if(data[index].whasherStatus==1){
+                        animate7Interval = setInterval(function(){
+                            var deg = 10;
+                            var strDeg = rotation7.style.transform.replace("rotate(", "");
+                            var strDeg = strDeg.replace(")", "");
+
+                            var currDeg = 0;
+
+                            if(strDeg == "")
+                            {
+                                currDeg = 1;
+                            }else {
+                                currDeg = parseInt(strDeg);
+                            }
+                            rotation7.style.transform = "rotate(" + (currDeg + deg) + "deg)";
+                        }, 10);
+                    }
+                } else if(data[index].whasherNumber==8){
+                    if(data[index].whasherStatus==1){
+                        animate8Interval = setInterval(function(){
+                            var deg = 10;
+                            var strDeg = rotation8.style.transform.replace("rotate(", "");
+                            var strDeg = strDeg.replace(")", "");
+
+                            var currDeg = 0;
+
+                            if(strDeg == "")
+                            {
+                                currDeg = 1;
+                            }else {
+                                currDeg = parseInt(strDeg);
+                            }
+                            rotation8.style.transform = "rotate(" + (currDeg + deg) + "deg)";
+                        }, 10);
+                    }
+                } else if(data[index].whasherNumber==9){
+                    if(data[index].whasherStatus==1){
+                        animate9Interval = setInterval(function(){
+                            var deg = 10;
+                            var strDeg = rotation9.style.transform.replace("rotate(", "");
+                            var strDeg = strDeg.replace(")", "");
+
+                            var currDeg = 0;
+
+                            if(strDeg == "")
+                            {
+                                currDeg = 1;
+                            }else {
+                                currDeg = parseInt(strDeg);
+                            }
+                            rotation9.style.transform = "rotate(" + (currDeg + deg) + "deg)";
+                        }, 10);
+                    }
+                } else if(data[index].whasherNumber==10){
+                    if(data[index].whasherStatus==1){
+                        animate10Interval = setInterval(function(){
+                            var deg = 10;
+                            var strDeg = rotation10.style.transform.replace("rotate(", "");
+                            var strDeg = strDeg.replace(")", "");
+
+                            var currDeg = 0;
+
+                            if(strDeg == "")
+                            {
+                                currDeg = 1;
+                            }else {
+                                currDeg = parseInt(strDeg);
+                            }
+                            rotation10.style.transform = "rotate(" + (currDeg + deg) + "deg)";
+                        }, 10);
+                    }
+                }
+            }
+        }
+    </script>
+</form>
 
 <table style="align: center">
     <tbody>
     <tr>
         <td style="text-align: center;">1</td>
         <td style="text-align: center;">2</td>
+        <td style="text-align: center;">3</td>
+        <td style="text-align: center;">4</td>
+        <td style="text-align: center;">5</td>
+        <td style="text-align: center;">6</td>
+        <td style="text-align: center;">7</td>
+        <td style="text-align: center;">8</td>
+        <td style="text-align: center;">9</td>
+        <td style="text-align: center;">10</td>
     </tr>
     <tr>
         <td style="text-align: center;">
@@ -58,64 +301,150 @@
                      id="rotation2" src="/images/rotation.png">
             </div>
         </td>
+        <td style="text-align: center;">
+            <div style="background-image: url(../images/washer.jpg);
+            background-repeat: no-repeat;
+            position: relative;
+            center center;
+            height: 250px;
+            width: 175px;
+            border: 1px solid black;
+             -moz-background-size: 100%;
+             -webkit-background-size: 100%;
+             -o-background-size: 100%;
+            background-size: 100%;" );>
+                <img style="width: 90px; height: 90px; overflow: hidden;  margin-left: 0px; margin-top: 65px; center center;"
+                     alt="Вращение"
+                     id="rotation3" src="/images/rotation.png">
+            </div>
+        </td>
+        <td style="text-align: center;">
+            <div style="background-image: url(../images/washer.jpg);
+            background-repeat: no-repeat;
+            position: relative;
+            center center;
+            height: 250px;
+            width: 175px;
+            border: 1px solid black;
+             -moz-background-size: 100%;
+             -webkit-background-size: 100%;
+             -o-background-size: 100%;
+            background-size: 100%;" );>
+                <img style="width: 90px; height: 90px; overflow: hidden;  margin-left: 0px; margin-top: 65px; center center;"
+                     alt="Вращение"
+                     id="rotation4" src="/images/rotation.png">
+            </div>
+        </td>
+        <td style="text-align: center;">
+            <div style="background-image: url(../images/washer.jpg);
+            background-repeat: no-repeat;
+            position: relative;
+            center center;
+            height: 250px;
+            width: 175px;
+            border: 1px solid black;
+             -moz-background-size: 100%;
+             -webkit-background-size: 100%;
+             -o-background-size: 100%;
+            background-size: 100%;" );>
+                <img style="width: 90px; height: 90px; overflow: hidden;  margin-left: 0px; margin-top: 65px; center center;"
+                     alt="Вращение"
+                     id="rotation5" src="/images/rotation.png">
+            </div>
+        </td>
+        <td style="text-align: center;">
+            <div style="background-image: url(../images/washer.jpg);
+            background-repeat: no-repeat;
+            position: relative;
+            center center;
+            height: 250px;
+            width: 175px;
+            border: 1px solid black;
+             -moz-background-size: 100%;
+             -webkit-background-size: 100%;
+             -o-background-size: 100%;
+            background-size: 100%;" );>
+                <img style="width: 90px; height: 90px; overflow: hidden;  margin-left: 0px; margin-top: 65px; center center;"
+                     alt="Вращение"
+                     id="rotation6" src="/images/rotation.png">
+            </div>
+        </td>
+        <td style="text-align: center;">
+            <div style="background-image: url(../images/washer.jpg);
+            background-repeat: no-repeat;
+            position: relative;
+            center center;
+            height: 250px;
+            width: 175px;
+            border: 1px solid black;
+             -moz-background-size: 100%;
+             -webkit-background-size: 100%;
+             -o-background-size: 100%;
+            background-size: 100%;" );>
+                <img style="width: 90px; height: 90px; overflow: hidden;  margin-left: 0px; margin-top: 65px; center center;"
+                     alt="Вращение"
+                     id="rotation7" src="/images/rotation.png">
+            </div>
+        </td>
+        <td style="text-align: center;">
+            <div style="background-image: url(../images/washer.jpg);
+            background-repeat: no-repeat;
+            position: relative;
+            center center;
+            height: 250px;
+            width: 175px;
+            border: 1px solid black;
+             -moz-background-size: 100%;
+             -webkit-background-size: 100%;
+             -o-background-size: 100%;
+            background-size: 100%;" );>
+                <img style="width: 90px; height: 90px; overflow: hidden;  margin-left: 0px; margin-top: 65px; center center;"
+                     alt="Вращение"
+                     id="rotation8" src="/images/rotation.png">
+            </div>
+        </td>
+        <td style="text-align: center;">
+            <div style="background-image: url(../images/washer.jpg);
+            background-repeat: no-repeat;
+            position: relative;
+            center center;
+            height: 250px;
+            width: 175px;
+            border: 1px solid black;
+             -moz-background-size: 100%;
+             -webkit-background-size: 100%;
+             -o-background-size: 100%;
+            background-size: 100%;" );>
+                <img style="width: 90px; height: 90px; overflow: hidden;  margin-left: 0px; margin-top: 65px; center center;"
+                     alt="Вращение"
+                     id="rotation9" src="/images/rotation.png">
+            </div>
+        </td>
+        <td style="text-align: center;">
+            <div style="background-image: url(../images/washer.jpg);
+            background-repeat: no-repeat;
+            position: relative;
+            center center;
+            height: 250px;
+            width: 175px;
+            border: 1px solid black;
+             -moz-background-size: 100%;
+             -webkit-background-size: 100%;
+             -o-background-size: 100%;
+            background-size: 100%;" );>
+                <img style="width: 90px; height: 90px; overflow: hidden;  margin-left: 0px; margin-top: 65px; center center;"
+                     alt="Вращение"
+                     id="rotation10" src="/images/rotation.png">
+            </div>
+        </td>
     </tr>
     </tbody>
 </table>
 
-<script>
-    var rotate1 = function(){
-        animate(function(timePassed) {
-            rotation1.style.transform = "rotate(" + timePassed + "deg)";
-        }, 100000);
+<a class="buttons" onclick="changeWashersStatus(this)">Обновить</a>
 
-        alert('Добрый день');
+<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 
-        $.getJSON("getWasherStatus",
-            {laundromatId: 1, washerId: 1},
-            function(data) {
-                alert('Boom!');
-                if (data != null) {
-                    alert('Boom 2!');
-                }
-            }
-        );
-        $.getJSON("/getWasherStatus", function(result){
-            alert('Boom!');
-        });
-    };
-
-    setTimeout(rotate1, 3000);
-
-    rotation1.onclick = function() {
-      animate(function(timePassed) {
-        <!--train.style.left = timePassed / 5 + 'px';-->
-        rotation1.style.transform = "rotate(" + timePassed + "deg)";
-      }, 100000);
-    };
-
-    rotation2.onclick = function() {
-      animate(function(timePassed) {
-        <!--train.style.left = timePassed / 5 + 'px';-->
-        rotation2.style.transform = "rotate(" + timePassed + "deg)";
-      }, 100000);
-    };
-
-    function animate(draw, duration) {
-      var start = performance.now();
-
-      requestAnimationFrame(function animate(time) {
-        var timePassed = time - start;
-
-        if (timePassed > duration) timePassed = duration;
-
-        draw(timePassed);
-
-        if (timePassed < duration) {
-          requestAnimationFrame(animate);
-        }
-
-      });
-    }
-</script>
 </body>
 </html>

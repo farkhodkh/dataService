@@ -9,7 +9,9 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import ru.laundromat.laundromatdataservice.data.entities.StatInfo
+import ru.laundromat.laundromatdataservice.data.entities.WashersStatus
 import ru.laundromat.laundromatdataservice.data.services.StatInfoService
+import ru.laundromat.laundromatdataservice.data.services.WashersStatusService
 import ru.laundromat.laundromatdataservice.security.DataBaseUser
 import java.text.SimpleDateFormat
 import java.util.*
@@ -17,12 +19,11 @@ import java.util.Locale
 
 @Controller
 class MainApiController {
+    @Autowired
     lateinit var service: StatInfoService
 
     @Autowired
-    fun setUserService(service: StatInfoService) {
-        this.service = service
-    }
+    lateinit var washersStatusService: WashersStatusService
 
     @Autowired
     lateinit var objectMapper: ObjectMapper
@@ -47,21 +48,94 @@ class MainApiController {
         return ResponseEntity.ok("DONE, line id: ${statInfo.Id}")
     }
 
-    private fun readData(data: String): StatInfo {
+    @PostMapping("/api/statistics/washerstatusdata")
+    fun staticWasherStatusReceiver(@RequestParam data: String): ResponseEntity<String> {
+
+        var washerStatus: WashersStatus
+
+        try {
+            washerStatus = readWasherStatusData(data)
+        } catch (e: Exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
+        }
+
+        try {
+            washersStatusService.saveWasherStatus(washerStatus)
+        } catch (ex: Exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.message)
+        }
+
+        return ResponseEntity.ok("DONE, line id: ${washerStatus.Id}")
+    }
+
+    fun readWasherStatusData(data: String): WashersStatus{
         var dbUser: DataBaseUser = SecurityContextHolder.getContext().authentication.principal as DataBaseUser
 
         val jsonNode = objectMapper.readTree(data)
-        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
 
-        val strOperationTime = jsonNode.get("operationTime")
+        val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
 
-        if (strOperationTime == null)
-            throw WasherDataReadException("Не указан параметр operationTime")
+        var starttime: Date
+
+        try {
+            starttime = format.parse(jsonNode.get("strStarttime").asText())
+        }catch (ex: Exception){
+            throw WasherStatusDataReadException("Параметр starttime указан не верно")
+        }
+
+        var laundromatid: Int
+
+        try {
+            laundromatid = jsonNode.get("laundromatid").asInt()
+        }catch (ex: Exception){
+            throw WasherStatusDataReadException("Параметр laundromatid указан не верно")
+        }
+
+        var laundromatnumber: Int
+
+        try {
+            laundromatnumber = jsonNode.get("laundromatnumber").asInt()
+        }catch (ex: Exception){
+            throw WasherStatusDataReadException("Параметр laundromatnumber указан не верно")
+        }
+
+        var whashernumber: Int
+
+        try {
+            whashernumber = jsonNode.get("whashernumber").asInt()
+        }catch (ex: Exception){
+            throw WasherStatusDataReadException("Параметр whashernumber указан не верно")
+        }
+
+        var whasherstatus: Int
+
+        try {
+            whasherstatus = jsonNode.get("whasherstatus").asInt()
+        }catch (ex: Exception){
+            throw WasherStatusDataReadException("Параметр whasherstatus указан не верно")
+        }
+
+        var statusdescription: String
+
+        try {
+            statusdescription = jsonNode.get("statusdescription").asText()
+        }catch (ex: Exception){
+            throw WasherStatusDataReadException("Параметр statusdescription указан не верно")
+        }
+
+        return WashersStatus(0, starttime, dbUser.customerId, laundromatid, laundromatnumber, whashernumber, whasherstatus, statusdescription)
+    }
+
+    fun readData(data: String): StatInfo {
+        var dbUser: DataBaseUser = SecurityContextHolder.getContext().authentication.principal as DataBaseUser
+
+        val jsonNode = objectMapper.readTree(data)
+        val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
 
         var operationTime: Date
 
         try {
-            operationTime = format.parse(jsonNode.get("operationTime").asText())
+            operationTime = format.parse(jsonNode.get("strOperationTime").asText())
         } catch (ex: Exception) {
             throw WasherDataReadException("Не верный формат параметра operationTime")
         }
@@ -119,3 +193,5 @@ class MainApiController {
 }
 
 class WasherDataReadException(message: String) : Exception(message)
+
+class WasherStatusDataReadException(message: String): Exception(message)
